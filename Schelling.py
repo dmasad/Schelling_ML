@@ -145,11 +145,10 @@ class Agent(object):
 					neighbors.append(0)
 				else:
 					neighbors.append(a.type)
-		similar = [n for n in neighbors if n == self.type]
-		if len(similar) >= self.model.desired_similar:
-			happy = 1
-		else:
+		if self.decision(neighbors):
 			happy = 0
+		else:
+			happy = 1
 
 		# Log this step:
 		log_entry = [self.model.steps, self.id_num, self.type]
