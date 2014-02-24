@@ -1,3 +1,28 @@
-The term Computational Social Science (CSS, to abbreviate the mouthful) has been gaining currency lately, most recently in an article by <a href="https://www.nae.edu/Publications/Bridge/106112/106118.aspx" target="_blank">Duncan Watts</a> of Microsoft Research, and a blog post by <a href="" target="_blank">Sean Taylor</a> of Facebook and NYU. Both focus on CSS as data science...
+The term Computational Social Science (CSS, to abbreviate the mouthful) has been gaining currency lately, most recently in an article by <a href="https://www.nae.edu/Publications/Bridge/106112/106118.aspx" target="_blank">Duncan Watts</a> of Microsoft Research, and a blog post by <a href="" target="_blank">Sean Taylor</a> of Facebook and NYU. Both focus on CSS as data science: using 'big data' and machine learning to make new discoveries about society. 
 
-My own Department of Computational Social Science has a slightly different view, which neither essay really addresses: CSS as the intersection of social science and complex systems, and the related use of agent-based models and social simulations. Complexity CSS probably dates back to some of the work of <a href="http://en.wikipedia.org/wiki/Herbert_A._Simon" target="_blank"Herbert Simon</a> 
+My own Department of Computational Social Science has a slightly different focus, which neither essay really addresses: CSS as the intersection of social science and complex systems, often applied through agent-based models and social simulations. Data is exciting (and much of my own research is data-oriented), but I think it's important not to think of CSS as <emph>only</emph> a subset of data science. Social systems are driven in large part by interactions, between individuals, organizations, states, etc., and the study of interactions seems to be where data science is weakest, at least at the moment.
+
+Here's an example, from some recent research I've been working on. Suppose we have some data on individuals or households in a city. We know each individual's 'type' (ethnicity, or political orientation, or preference for red or green chile), the types of their immediate neighbors, and whether they are happy where they are at the end of some time step, or whether they want to move. The data looks like this:
+<table>
+<tr><td>Step</td><td>Agent_ID</td><td>Agent_Type</td><td>Neighbor_0</td><td>Neighbor_1</td><td>Neighbor_2</td><td>...</td><td>Neighbor_7</td><td>Happy</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>...</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>...</td><td>1</td><td>1</td></tr>
+<tr><td>0</td><td>2</td><td>1</td><td>0</td><td>1</td><td>1</td><td>...</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>3</td><td>2</td><td>1</td><td>0</td><td>1</td><td>...</td><td>2</td><td>1</td></tr>
+<tr><td>0</td><td>4</td><td>2</td><td>0</td><td>1</td><td>2</td><td>...</td><td>1</td><td>1</td></tr>
+<tr><td></td></tr>
+</table>
+
+Now, it's easy enough to fit a statistical model to this data, to see whether we can predict which agents will stay and which will move. Since we're trying to predict a binary outcome, let's start with a logistic regression (using Python and Scikit-Learn):
+[python]
+features = log.columns[2:11]
+logit = LogisticRegression()
+scores = cross_validation.cross_val_score(logit, 
+					log[features], log["Happy"], cv=5)
+[/python]
+The scores for prediction accuracy I got when I ran this were
+[python]
+[ 0.99541084  0.99562842  0.99628415  0.99715847  0.99781421]
+[/python]
+
+

@@ -213,9 +213,9 @@ def define_ml_agent(prediction_function):
             features = [self.type] + neighbors
             p = prediction_function(features)
             if p == 1:
-                return True
+                return False # Don't move
             else:
-                return False
+                return True
     return NewAgent
 
 
