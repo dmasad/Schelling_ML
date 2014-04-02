@@ -67,21 +67,32 @@ class Agent(object):
 
 class Model(object):
     '''
-    Hard-coded Schelling model with agent types 1, 2, a 10x10 grid, 
-    80% full and 20% of agents of type 2.
+    A schelling segregation model.
     '''
 
-    def __init__(self, Agent_Class = Agent):
+    def __init__(self, width=10, height=10, density=0.8, type_2=0.2, 
+        homophily=3, Agent_Class = Agent):
+        '''
+        New Schelling segregation model.
+
+        Args:
+            width, height: Shape of the toroidal grid (default 10)
+            density: Probability of any cell containing an agent (default 0.8)
+            type_2: Probability of any agent being of Type 2 (default 0.2)
+            homophily: Number of desired-similar agents (for default case)
+            Agent_Class: If provided child class of Agent with a new behavior 
+
+        '''
         # World size:
-        self.width = 10
-        self.height = 10
+        self.width = width
+        self.height = height
 
         # Agent characteristics
-        self.density = 0.8 # Probability of an agent in any cell
-        self.minority = 0.2  # Probability of a type 2 agent.
+        self.density = density # Probability of an agent in any cell
+        self.minority = type_2  # Probability of a type 2 agent.
 
         # Agent behavior:
-        self.desired_similar = 3
+        self.desired_similar = homophily
 
         self.all_agents = []
         self.grid = np.empty((self.width, self.height), dtype=object)
